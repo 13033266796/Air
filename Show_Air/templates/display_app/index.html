@@ -16,7 +16,6 @@
     <div id="BarChart">11</div>
     <div id="LineChart">11</div>
 
-
     <script>
     $(function () {
         // 初始化地图
@@ -60,7 +59,7 @@
         "series": [
             {
                 "type": "effectScatter",
-                "name": "geo",
+                "name": "",
                 "coordinateSystem": "geo",
                 "showEffectOn": "render",
                 "rippleEffect": {
@@ -184,7 +183,7 @@
                         "value": [
                             117.27,
                             31.86,
-                            {{today_pm2_5.12safe}},
+                            {{today_pm2_5.12|safe}},
                             {{today_aqi.12|safe}},
                         ]
                     },
@@ -403,7 +402,7 @@
         },
         "title": [
             {
-                "text": "Geo-\u57fa\u672c\u793a\u4f8b",
+                "text": "实时空气质量",
                 "padding": 5,
                 "itemGap": 10
             }
@@ -444,6 +443,9 @@
         chart_a53707c77f0f451b9403cfe178e327c0.setOption(option_a53707c77f0f451b9403cfe178e327c0);
     }
     </script>
-
+    <br>
+    <div style="clear: both; text-align:center;width:1700px">
+    <a href='http://beian.miit.gov.cn/' target='_blank'>粤ICP备20019977号</a>
+    </div>
 </body>
 </html>

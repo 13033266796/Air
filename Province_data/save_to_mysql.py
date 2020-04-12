@@ -64,4 +64,4 @@ def save_to_mysql(file_name, n):
 #     save_to_mysql(file_name, i*10000)
 #     time.sleep(10)
 
-save_to_mysql("./original/history_data_202001_202002.txt",68882)
+save_to_mysql("./original/history_data_202003.txt",70711)

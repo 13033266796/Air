@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-from .models import AirInfo, PredictInfo
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
+
+from .models import AirInfo, PredictInfo, LatestAirInfo
 import pandas as pd
 import datetime
 # Create your views here
@@ -21,7 +24,10 @@ def index(request):
     predict_pm2_5 = [float(pm2_5.city_PM2_5) for pm2_5 in cur_predict]
 
     # 今日数据
-    cur_today = AirInfo.objects.filter(city_date = '2019-12-31')
+    str_today = datetime.datetime.today().date().strftime("%Y-%m-%d")
+    # cur_today = LatestAirInfo.objects.filter(city_date = str_today)
+
+    cur_today = LatestAirInfo.objects.all()
     citys = ['北京', '天津', '上海', '重庆', '石家庄', '太原', '西安',
              '济南', '长春', '哈尔滨', '南京', '杭州', '合肥', '南昌',
              '福州', '武汉', '长沙', '成都', '贵阳', '昆明', '广州', "郑州", "沈阳",
@@ -34,36 +40,8 @@ def index(request):
                 today_aqi.append(float(data.city_AQI))
                 today_pm2_5.append(float(data.city_PM2_5))
 
-    # 生成日期 --月份
-    dates = pd.date_range("2013-12", "2020-01", freq="m")
-    months = dates.map(lambda x: x.strftime('%Y-%m')).tolist()  # [2013-12 2014-01 2014-02 ... 2019-31]
-    # 生成日期 --日
-    days = [str(day).rjust(2, '0') for day in range(1, 32)]  # [01 02 03 04 ... 31 ]
-    # 格式化数据
-    format_data_AQI = {}
-    format_data_PM2_5 = {}
-
-    for month in months:
-        AQI = []
-        PM2_5 = []
-        for day in days:
-            if month + "-" + day in history_data.keys():  # 真实存在的日期
-                AQI.append(float(history_data[month + "-" + day][0]))
-                PM2_5.append(float(history_data[month + "-" + day][1]))
-            else:  # 不存在的日期 如：2.30, 4.31, 6.31...等等
-                AQI.append(0)
-                PM2_5.append(0)
-        format_data_AQI[month] = AQI
-        format_data_PM2_5[month] = PM2_5
-
-    return render(request, "display_app/index.html", context={"data_AQI": format_data_AQI,
-                                                      "data_PM2_5": format_data_PM2_5,
-                                                      "city": "北京", "months": months,
-                                                      "predict_date":predict_date,
-                                                      "predict_aqi":predict_aqi,
-                                                      "predict_pm2_5":predict_pm2_5,
-                                                      "today_aqi":today_aqi,
-                                                      "today_pm2_5":today_pm2_5})
+    return render(request, "display_app/index.html", context={"today_aqi": today_aqi,
+                                                                 "today_pm2_5": today_pm2_5})
 
 
 def get_city_history_data(request):
@@ -80,7 +58,9 @@ def get_city_history_data(request):
     predict_pm2_5 = [float(pm2_5.city_PM2_5) for pm2_5 in cur_predict]
 
     # 今日数据
-    cur_today = AirInfo.objects.filter(city_date='2019-12-31')
+    # cur_today = AirInfo.objects.filter(city_date='2019-12-31')
+
+    cur_today = AirInfo.objects.all()
     citys = ['北京', '天津', '上海', '重庆', '石家庄', '太原', '西安',
              '济南', '长春', '哈尔滨', '南京', '杭州', '合肥', '南昌',
              '福州', '武汉', '长沙', '成都', '贵阳', '昆明', '广州', "郑州", "沈阳",
@@ -129,7 +109,7 @@ def get_data(request):
     city = request.GET.get("city")
     print(city)
     # 从数据库获取city历史空气质量数据
-    cur = AirInfo.objects.filter(city_name=city)
+    cur = AirInfo.objects.filter(city_name=city).all()
     history_data = {data.city_date.strftime('%Y-%m-%d'): [data.city_AQI, data.city_PM2_5] for data in cur}
 
     # 预测数据
@@ -139,7 +119,9 @@ def get_data(request):
     predict_pm2_5 = [float(pm2_5.city_PM2_5) for pm2_5 in cur_predict]
 
     # 生成日期 --月份
-    dates = pd.date_range("2013-12", "2020-01", freq="m")
+    str_today = (datetime.datetime.today() + relativedelta(months=+1)).date().strftime("%Y-%m")
+    print(f"****{str_today}****")
+    dates = pd.date_range("2013-12", str_today, freq="m")
     months = dates.map(lambda x: x.strftime('%Y-%m')).tolist()  # [2013-12 2014-01 2014-02 ... 2019-31]
     # 生成日期 --日
     days = [str(day).rjust(2, '0') for day in range(1, 32)]  # [01 02 03 04 ... 31 ]
@@ -166,7 +148,7 @@ def get_data(request):
                           "predict_date": predict_date,
                           "predict_aqi": predict_aqi,
                           "predict_pm2_5": predict_pm2_5,})
-    response["Access-Control-Allow-Origin"] = "*"
+    # response["Access-Control-Allow-Origin"] = "*"
 
     return response
 

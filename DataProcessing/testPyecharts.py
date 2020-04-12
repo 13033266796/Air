@@ -15,10 +15,9 @@ def geo_base() -> Geo:
     c = (
         Geo(init_opts=opts.InitOpts(theme=ThemeType.WESTEROS))# 地图主题
         .add_schema(maptype="china", is_roam=False, itemstyle_opts=opts.ItemStyleOpts(area_color = '#E6E6FA'))# 地图颜色
-        # .add("geo", [list(z) for z in zip(Faker.provinces, Faker.values())])
-        # .add("geo",[('南昌',12), ('北京',12), ('天津',12), ('拉萨',12), ('呼和浩特',12), ('桂林',12),('沈阳',12), ('乌鲁木齐',12),('海口',12)], type_="effectScatter",
-        #      itemstyle_opts=opts.ItemStyleOpts(border_color = '#8A2BE2')) # 点的颜色
-        .add("geo",a_list, type_="effectScatter",tooltip_opts=opts.TooltipOpts(formatter="{b}:"))
+        .add("geo", [list(z) for z in zip(Faker.provinces, Faker.values())])
+        .add("geo",[('南昌',12), ('北京',12), ('天津',12), ('拉萨',12), ('呼和浩特',12), ('桂林',12),('沈阳',12), ('乌鲁木齐',12),('海口',12)], type_="effectScatter",
+             itemstyle_opts=opts.ItemStyleOpts(border_color = '#8A2BE2')) # 点的颜色
         .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
         .set_global_opts(
             visualmap_opts=opts.VisualMapOpts(series_index=[0][0]),

@@ -6,16 +6,16 @@ function GetData(cityname){
 	if(!$.trim(cityname)){
 		alert('请先选择城市！')
 	}
-	
 	// 根据城市名称异步获取该城市的历史数据
 	$.ajax({
-		url:'http://47.115.24.101:8001/api/data/?',
+		/*url:'http://47.115.24.101:80/api/data/?',*/                
+		url:'http://air.chanshin.cn/api/data/?',
 		data:{city:cityname},
 		type:'get',
 		dataType:'json',
 		success:function(res){
 			// 显示折线图
-			ShowLineChart(res.predict_date,res.predict_pm2_5,res.predict_aqi);
+			ShowLineChart(cityname, res.predict_date,res.predict_pm2_5,res.predict_aqi);
 			// 显示柱状图
 			ShowHistogramChart(cityname,res.months,res.data_AQI,res.data_PM2_5);
 		},
@@ -24,7 +24,6 @@ function GetData(cityname){
 　　　　　　alert('发生(' + xhr.status + ')错误：' +xhr.statusText);
 		}
 	});
-	
 }
 
 /* 显示柱状图
@@ -86,7 +85,7 @@ function ShowHistogramChart(cityname,MonthArray,AQIArray,PM2_5Array){
 				}
 			},
 			title: {
-				subtext: '数据来自国家统计局'
+				subtext: '数据来自Jasper'
 			},
 			tooltip: {
 			},
@@ -153,13 +152,13 @@ function ShowHistogramChart(cityname,MonthArray,AQIArray,PM2_5Array){
 *@param{array}predict_pm2_5 PM2.5数组
 *@param{array}predict_aqi AQI数组
 */
-function ShowLineChart(predict_date,predict_pm2_5,predict_aqi){
+function ShowLineChart(cityname, predict_date,predict_pm2_5,predict_aqi){
 
         var lineChart = echarts.init(document.getElementById('BarChart'));
 
         option = {
             title: {
-                text: '折线图堆叠'
+                text: cityname + '近七日空气质量趋势'
             },
             tooltip: {
                 trigger: 'axis'

@@ -6,4 +6,4 @@ COPY requirements.txt /usr/src/app/
 RUN pip install -r /usr/src/app/requirements.txt
 RUN rm -rf /usr/src/app
 COPY . /usr/src/app
-CMD [ "python3", "./manage.py", "runserver", "0.0.0.0:8000"]
+CMD [ "python3", "./manage.py", "runserver", "0.0.0.0:8001"]

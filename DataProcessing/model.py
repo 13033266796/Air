@@ -29,7 +29,7 @@ class AirInfo(Base):
     city_AQI = Column(DECIMAL(18), nullable=False)
     city_PM2_5 = Column(DECIMAL(18), nullable=False)
 
-engine = create_engine("mysql+pymysql://root:123456@47.115.24.101/air_dev")
+engine = create_engine("mysql+pymysql://root:123456@47.115.24.101/show_air")
 Session = sessionmaker(bind=engine)
 session = Session()
 

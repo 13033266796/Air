@@ -90,4 +90,4 @@ def get_dayily_data_new():
     return data
 
 
-get_dayily_data_new()
+# get_dayily_data_new()

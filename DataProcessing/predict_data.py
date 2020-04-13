@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 import pymysql
 from statsmodels.tsa.api import ExponentialSmoothing
 from sklearn.metrics import mean_squared_error
-from order_time import date_offset
-import datetime
-from datetime import timedelta
 
 def conn_mysql(city = "北京"):
     conn = pymysql.connect(host='47.115.24.101', port=3306, user='root', passwd='123456', db='show_air',
@@ -65,16 +62,16 @@ def predict_aqi():
     res = fit1.forecast(7)
     # print(res)
     predict_data = pd.Series(res)
-    predict_data.index = pd.date_range("20200411", "20200417", freq="D")
+    predict_data.index = pd.date_range("20200101", "20200107", freq="D")
     print(predict_data)
     concat_data = pd.concat([df["aqi"], predict_data.round(decimals=2)])
-    rms = math.sqrt(mean_squared_error(df.aqi[2315:], predict_data.values))
+    rms = math.sqrt(mean_squared_error(df.aqi[2215:], predict_data.values))
     print(rms)
     #
     # # 绘图
     plt.figure(figsize=(16, 8))
-    # plt.plot(concat_data, label="Concat_Data", color="blue")  # 拼接数据
-    plt.plot(df["aqi"][-100:-1], label="Original", color="red")  # 原数据
+    plt.plot(concat_data, label="Concat_Data", color="blue")  # 拼接数据
+    plt.plot(df["aqi"], label="Original", color="red")  # 原数据
     plt.plot(predict_data, label="Holt_Winter", color="green")  # 预测数据
     plt.legend(loc="best")
     plt.title("南昌" + "市2014-2019年AQI折线图及对2020年的预测->RMSE:%.2f" % rms)
@@ -138,27 +135,16 @@ def predict_air(city, date):
     # rms_pm2_5 = math.sqrt(mean_squared_error(df.pm2_5[2215:], predict_pm2_5.values))
     # print("aqi rms:",rms_aqi,"\n","pm2.5 rms:",rms_pm2_5)                                                 # 计算拟合度
     # ret = pd.DataFrame(list(zip(predict_aqi, predict_pm2_5)), columns=["aqi","pm2.5"])                    # 拼接为DataFrame
-
-
-
     return([predict_aqi.index.strftime('%Y-%m-%d').tolist(), predict_aqi.values.round(decimals=2).tolist(), predict_pm2_5.values.round(decimals=2).tolist()] )                                  # [[aqi],[pm2.5]])
 
 if __name__ == "__main__":
-    # citys = ['北京', '天津', '上海', '重庆', '石家庄', '太原', '西安',
-    #          '济南', '长春', '哈尔滨', '南京', '杭州', '合肥', '南昌',
-    #          '福州', '武汉', '长沙', '成都', '贵阳', '昆明', '广州', "郑州", "沈阳",
-    #          '海口', '兰州', '西宁', '呼和浩特', '乌鲁木齐', '拉萨', '南宁', '银川']
-    # data = []
-    # today = (datetime.date.today() - timedelta(days=1)).strftime("%Y%m%d")
-    # offset_day = date_offset(today)
-    # for city in citys:
-    #     city_data = predict_air(city, offset_day)
-    #     print(city,":")
-    #     print("predict_date:{}".format(city_data[0]))
-    #     print("predict_AQI:{}".format(city_data[1]))
-    #     print("predict_PM2.5:{}".format(city_data[2]))
-    #     data.extend([[city, city_data[0][i], str(city_data[1][i]), str(city_data[2][i])] for i in range(len(city_data[0]))])
-    # print(data)
-    # save_to_mysql(data)
-
-    predict_aqi()
+    citys = ['北京', '天津', '上海', '重庆', '石家庄', '太原', '西安',
+             '济南', '长春', '哈尔滨', '南京', '杭州', '合肥', '南昌',
+             '福州', '武汉', '长沙', '成都', '贵阳', '昆明', '广州', "郑州", "沈阳",
+             '海口', '兰州', '西宁', '呼和浩特', '乌鲁木齐', '拉萨', '南宁', '银川']
+    data = []
+    for city in citys:
+        city_data = predict_air(city)
+        data.extend([[city, city_data[0][i], str(city_data[1][i]), str(city_data[2][i])] for i in range(len(city_data[0]))])
+    print(data)
+    save_to_mysql(data)

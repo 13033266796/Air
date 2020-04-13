@@ -26,6 +26,7 @@ CITYS = ['北京', '天津', '上海', '重庆', '石家庄', '太原', '西安'
          '乌鲁木齐', '拉萨', '南宁', '银川']
 
 url = "http://www.pm25x.com/city/{}.htm"
+url_new = "http://www.pm25.com/city/{}.html"
 
 
 def get_dayily_data():
@@ -45,11 +46,11 @@ def get_dayily_data():
             if today_pm2_5[2] != '--':
                 count += 1
                 ave_pm += float(today_pm2_5[2])
-        ave_pm = (ave_pm/count)
+        ave_pm = (ave_pm / count)
         ave_pm = round(ave_pm, 2)
 
-        data[city] = {"aqi":float(aqi), "pm2.5":ave_pm}
-        print({"city":city, "aqi":float(aqi), "pm2.5":ave_pm})
+        data[city] = {"aqi": float(aqi), "pm2.5": ave_pm}
+        print({"city": city, "aqi": float(aqi), "pm2.5": ave_pm})
     print("获取实时数据成功")
     return data
 
@@ -68,9 +69,25 @@ def get_yesterday_data():
         res = tree.xpath("//table/tbody/tr")[0]
         tmp = res.xpath("//td/text()")
 
-        yesterday_data.append([city,tmp[-8], tmp[-7], tmp[-6]])
+        yesterday_data.append([city, tmp[-8], tmp[-7], tmp[-6]])
 
     print(yesterday_data)
     return yesterday_data
 
-get_dayily_data()
+
+def get_dayily_data_new():
+    data = {}
+    for city in CITYS:
+        html_source = requests.get(url_new.format(CITY_MAPPING[city])).text
+        tree = etree.HTML(html_source)
+
+        aqi = tree.xpath("//div[@class='cbol_aqi']/a[1]/text()")[0]
+        pm = tree.xpath("//span[@class='cbol_nongdu_num_1']/text()")[0]
+
+        data[city] = {"aqi": float(aqi), "pm2.5": pm}
+        print({"city": city, "aqi": float(aqi), "pm2.5": pm})
+    print("获取实时数据成功")
+    return data
+
+
+get_dayily_data_new()

@@ -1,7 +1,7 @@
 from celery import Celery
 from celery.schedules import crontab
-from datetime import timedelta
-import datetime
+import logging
+import air_log
 
 app = Celery("celery_beat", broker="redis://127.0.0.1:6379/2",
              backend="redis://127.0.0.1:6379/2")
@@ -26,3 +26,4 @@ app.conf.beat_schedule = {
     }
 }
 app.conf.timezone = 'Asia/Shanghai'
+logger = logging.getLogger("air")

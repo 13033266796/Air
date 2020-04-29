@@ -35,11 +35,11 @@ def get_dayily_data():
         ave_pm = 0
         count = 0
         html_source = requests.get(url.format(CITY_MAPPING[city])).text
-        print(f"网页源码 --> {html_source}")
+
         city_today = re.findall(r"<tr>(.*?)</tr>", html_source)[1:]
-        print(f"表单数据 -- >{city_today}")
+
         aqi = re.search(r"""<div class="aqivalue">(.*?)</div>""", html_source).group(1)
-        print(aqi)
+
         # 获取到一个城市所有的 tr 标签
         for tr in city_today:
             today_pm2_5 = re.findall(r"<td>(.*?)</td>", tr)

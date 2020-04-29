@@ -17,8 +17,6 @@ from predict_data import predict_air
 
 @app.task
 def hour():
-    # with open("./test_celery.txt", "a", encoding="utf-8") as f:
-    # f.write(str(datetime.datetime.now()) + "开始获取数据\n")
     logger.info("开始获取数据")
     # 获取数据
     # data = get_dayily_data_new()
@@ -33,7 +31,6 @@ def hour():
                                     city_date=datetime.datetime.today().date(),
                                     city_AQI=data[city]["aqi"],
                                     city_PM2_5=data[city]["pm2.5"]))
-    # f.write(str(datetime.datetime.now()) + "成功存储数据\n")
     logger.info("成功存储数据")
 
     t = str(datetime.datetime.now())
@@ -42,8 +39,6 @@ def hour():
 
 @app.task
 def day():
-    # with open("./test_celery.txt", "a", encoding="utf-8") as f:
-
     # 更新历史空气质量数据库
     yesterday_data = get_yesterday_data()  # [[北京]，[天津],...]
     with MysqlModel() as msyql:
@@ -53,7 +48,6 @@ def day():
                               city_AQI=city[2],
                               city_PM2_5=city[3]))
     logger.info("开始预测")
-    # f.write(str(datetime.datetime.now()) + "开始预测\n")
     # 预测
     result = []  # 预测集
     today = (datetime.date.today() - timedelta(days=1)).strftime("%Y%m%d")
@@ -64,7 +58,6 @@ def day():
         result.extend(
             [[city, city_data[0][i], str(city_data[1][i]), str(city_data[2][i])] for i in range(len(city_data[0]))])
     logger.info("预测完成，开始存储数据")
-    # f.write(str(datetime.datetime.now()) + "预测完成，开始存储数据\n")
     # 存储
     with MysqlModel() as mysql:
         mysql.query(PredictAirInfo).delete()
@@ -74,7 +67,6 @@ def day():
                                      city_AQI=i[2],
                                      city_PM2_5=i[3]))
         logger.info("完成预测数据存储")
-        # f.write(str(datetime.datetime.now()) + "完成预测数据存储\n")
 
     t = str(datetime.datetime.now())
     return f"{t} predict success !"

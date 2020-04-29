@@ -19,7 +19,8 @@ def hour():
     with open("./test_celery.txt", "a", encoding="utf-8") as f:
         f.write(str(datetime.datetime.now()) + "开始获取数据\n")
         # 获取数据
-        data = get_dayily_data_new()
+        # data = get_dayily_data_new()
+        data = get_dayily_data()
         # 存储数据
         with MysqlModel() as mysql:
             # 删除旧数据

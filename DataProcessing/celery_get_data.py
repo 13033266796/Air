@@ -2,14 +2,13 @@
 import requests
 import datetime
 from datetime import timedelta
-import json
 import re
 from selenium import webdriver
 import time
-import pandas as pd
 from urllib import parse
 from lxml import etree
-from dateutil.relativedelta import relativedelta
+
+from celery_beat import logger
 
 CITY_MAPPING = {"沈阳": "shenyang", "西安": "xian", "哈尔滨": "haerbin", "长春": "changchun",
                 "北京": "beijing", "天津": "tianjin", "石家庄": "shijiazhuang", "济南": "jinan",
@@ -34,8 +33,9 @@ def get_dayily_data():
     for city in CITYS:
         ave_pm = 0
         count = 0
+        logger.info(f"开始请求-->{city}")
         html_source = requests.get(url.format(CITY_MAPPING[city])).text
-
+        logger.info(f"完成请求-->{city}")
         city_today = re.findall(r"<tr>(.*?)</tr>", html_source)[1:]
 
         aqi = re.search(r"""<div class="aqivalue">(.*?)</div>""", html_source).group(1)

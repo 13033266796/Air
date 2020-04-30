@@ -51,6 +51,7 @@ def get_dayily_data():
 
         data[city] = {"aqi": float(aqi), "pm2.5": ave_pm}
         print({"city": city, "aqi": float(aqi), "pm2.5": ave_pm})
+        time.sleep(1)
     print("获取实时数据成功")
     return data
 

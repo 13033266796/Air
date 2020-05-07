@@ -1,0 +1,36 @@
+body {
+    width: 100%;
+    height: auto;
+    background: url('../static/img/xinchun2020_02.png') no-repeat;
+    background-size: 100%;
+}
+
+#Map {
+    width: 45%;
+    height: 500px;
+    float: left;
+    margin-left:5%;
+}
+
+#BarChart {
+    width: 45%;
+    height: 500px;
+    float: left;
+    margin-left:5%;
+}
+
+#LineChart {
+    width: 98%;
+    height: 450px;
+    float: left;
+    margin-top:2%;
+}
+
+#canvas {
+    width: 100%;
+    height: auto /*Ĭ��ȫ����ʾ ���Լ����ø߶�640px*/;
+    position:absolute;
+    display: inline-block;
+    vertical-align: baseline position:absolute;
+    z-index: -1;
+}

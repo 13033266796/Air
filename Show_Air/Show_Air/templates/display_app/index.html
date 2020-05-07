@@ -1,0 +1,452 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../../static/jquery.min.1.8.2.js"></script>
+    <script type="text/javascript" src="../../static/get_city_history_data.js"></script>
+    <script type="text/javascript" src="../../static/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="../../static/echarts/china.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="../../static/aqi.css" />
+</head>
+<body>
+    <!--<canvas id="canvas"></canvas>-->
+    <div id="Map" class="chart-container"></div>
+    <div id="BarChart">11</div>
+    <div id="LineChart">11</div>
+
+
+    <script>
+    $(function () {
+        // 初始化地图
+        InitMap();
+
+        // 页面加载完成后初始化显示北京的数据
+        GetData('北京');
+        $('#Map div').click(function (e) {
+            var a = $(this).next().text(); // 获取城市
+            a = a.split(" ");
+            // alert("haha");
+            if(a[0].length === 0){
+                alert('城市获取失败')
+            }
+            else {
+                // 调用获取城市数据函数，显示折线图和柱状图
+                GetData(a[0].split(":")[0]);
+            }
+
+            e.stopPropagation();// 阻止事件冒泡
+        });
+
+    });
+
+    /* 初始化地图
+    * @method InitMap
+    */
+    function InitMap(){
+        var chart_a53707c77f0f451b9403cfe178e327c0 = echarts.init(
+                document.getElementById('Map'), 'westeros', {renderer: 'canvas'}
+            );
+        var option_a53707c77f0f451b9403cfe178e327c0 = {
+        "animation": true,
+        "animationThreshold": 2000,
+        "animationDuration": 1000,
+        "animationEasing": "cubicOut",
+        "animationDelay": 0,
+        "animationDurationUpdate": 300,
+        "animationEasingUpdate": "cubicOut",
+        "animationDelayUpdate": 0,
+        "series": [
+            {
+                "type": "effectScatter",
+                "name": "",
+                "coordinateSystem": "geo",
+                "showEffectOn": "render",
+                "rippleEffect": {
+                    "show": true,
+                    "brushType": "stroke",
+                    "scale": 2.5,
+                    "period": 4
+                },
+                "symbolSize": 12,
+                "data": [
+                    {
+                        "name": "\u5317\u4eac",
+                        "value": [
+                            116.407526,
+                            39.90403,
+                            {{today_pm2_5.0|safe}},
+                            {{today_aqi.0|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u5929\u6d25",
+                        "value": [
+                            117.200983,
+                            39.084158,
+                            {{today_pm2_5.1|safe}},
+                            {{today_aqi.1|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u4e0a\u6d77",
+                        "value": [
+                            121.473701,
+                            31.230416,
+                            {{today_pm2_5.2|safe}},
+                            {{today_aqi.2|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u91cd\u5e86",
+                        "value": [
+                            106.551556,
+                            29.563009,
+                            {{today_pm2_5.3|safe}},
+                            {{today_aqi.3|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u77f3\u5bb6\u5e84",
+                        "value": [
+                            114.48,
+                            38.03,
+                            {{today_pm2_5.4|safe}},
+                            {{today_aqi.4|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u592a\u539f",
+                        "value": [
+                            112.53,
+                            37.87,
+                            {{today_pm2_5.5|safe}},
+                            {{today_aqi.5|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u897f\u5b89",
+                        "value": [
+                            108.95,
+                            34.27,
+                            {{today_pm2_5.6|safe}},
+                            {{today_aqi.6|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u6d4e\u5357",
+                        "value": [
+                            117,
+                            36.65,
+                            {{today_pm2_5.7|safe}},
+                            {{today_aqi.7|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u957f\u6625",
+                        "value": [
+                            125.35,
+                            43.88,
+                            {{today_pm2_5.8|safe}},
+                            {{today_aqi.8|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u54c8\u5c14\u6ee8",
+                        "value": [
+                            126.63,
+                            45.75,
+                            {{today_pm2_5.9|safe}},
+                            {{today_aqi.9|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u5357\u4eac",
+                        "value": [
+                            118.78,
+                            32.04,
+                            {{today_pm2_5.10|safe}},
+                            {{today_aqi.10|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u676d\u5dde",
+                        "value": [
+                            120.19,
+                            30.26,
+                            {{today_pm2_5.11|safe}},
+                            {{today_aqi.11|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u5408\u80a5",
+                        "value": [
+                            117.27,
+                            31.86,
+                            {{today_pm2_5.12|safe}},
+                            {{today_aqi.12|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u5357\u660c",
+                        "value": [
+                            115.89,
+                            28.68,
+                            {{today_pm2_5.13|safe}},
+                            {{today_aqi.13|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u798f\u5dde",
+                        "value": [
+                            119.3,
+                            26.08,
+                            {{today_pm2_5.14|safe}},
+                            {{today_aqi.14|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u6b66\u6c49",
+                        "value": [
+                            114.31,
+                            30.52,
+                            {{today_pm2_5.15|safe}},
+                            {{today_aqi.15|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u957f\u6c99",
+                        "value": [
+                            113,
+                            28.21,
+                            {{today_pm2_5.16|safe}},
+                            {{today_aqi.16|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u6210\u90fd",
+                        "value": [
+                            104.06,
+                            30.67,
+                            {{today_pm2_5.17|safe}},
+                            {{today_aqi.17|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u8d35\u9633",
+                        "value": [
+                            106.71,
+                            26.57,
+                            {{today_pm2_5.18|safe}},
+                            {{today_aqi.18|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u6606\u660e",
+                        "value": [
+                            102.73,
+                            25.04,
+                            {{today_pm2_5.19|safe}},
+                            {{today_aqi.19|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u5e7f\u5dde",
+                        "value": [
+                            113.23,
+                            23.16,
+                            {{today_pm2_5.20|safe}},
+                            {{today_aqi.20|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u90d1\u5dde",
+                        "value": [
+                            113.65,
+                            34.76,
+                            {{today_pm2_5.21|safe}},
+                            {{today_aqi.21|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u6c88\u9633",
+                        "value": [
+                            123.38,
+                            41.8,
+                            {{today_pm2_5.22|safe}},
+                            {{today_aqi.22|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u6d77\u53e3",
+                        "value": [
+                            110.35,
+                            20.02,
+                            {{today_pm2_5.23|safe}},
+                            {{today_aqi.23|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u5170\u5dde",
+                        "value": [
+                            103.73,
+                            36.03,
+                            {{today_pm2_5.24|safe}},
+                            {{today_aqi.24|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u897f\u5b81",
+                        "value": [
+                            101.74,
+                            36.56,
+                            {{today_pm2_5.25|safe}},
+                            {{today_aqi.25|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u547c\u548c\u6d69\u7279",
+                        "value": [
+                            111.65,
+                            40.82,
+                            {{today_pm2_5.26|safe}},
+                            {{today_aqi.26|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u4e4c\u9c81\u6728\u9f50",
+                        "value": [
+                            87.68,
+                            43.77,
+                            {{today_pm2_5.27|safe}},
+                            {{today_aqi.27|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u62c9\u8428",
+                        "value": [
+                            91.11,
+                            29.97,
+                            {{today_pm2_5.28|safe}},
+                            {{today_aqi.28|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u5357\u5b81",
+                        "value": [
+                            108.33,
+                            22.84,
+                            {{today_pm2_5.29|safe}},
+                            {{today_aqi.29|safe}},
+                        ]
+                    },
+                    {
+                        "name": "\u94f6\u5ddd",
+                        "value": [
+                            106.27,
+                            38.47,
+                            {{today_pm2_5.30|safe}},
+                            {{today_aqi.30|safe}},
+                        ]
+                    }
+                ],
+                "label": {
+                    "show": false,
+                    "position": "top",
+                    "margin": 8
+                },
+                "tooltip": {
+                    "show": true,
+                    "trigger": "item",
+                    "triggerOn": "mousemove|click",
+                    "axisPointer": {
+                        "type": "line"
+                    },
+                    "formatter": function (p) {
+                        return(p["name"]+":<br>AQI:"+p["value"][3]+"<br>PM2.5:"+p["value"][2])
+                    },
+                    "textStyle": {
+                        "fontSize": 14
+                    },
+                    "borderWidth": 0
+                }
+            }
+        ],
+        "legend": [
+            {
+                "data": [
+                    "geo"
+                ],
+                "selected": {
+                    "geo": true
+                },
+                "show": true,
+                "padding": 5,
+                "itemGap": 10,
+                "itemWidth": 25,
+                "itemHeight": 14
+            }
+        ],
+        "tooltip": {
+            "show": true,
+            "trigger": "item",
+            "triggerOn": "mousemove|click",
+            "axisPointer": {
+                "type": "line"
+            },
+            "formatter": function (params) {        return params.name + ' : ' + params.value[2];    },
+            "textStyle": {
+                "fontSize": 14
+            },
+            "borderWidth": 0
+        },
+        "title": [
+            {
+                "text": "实时空气质量",
+                "padding": 5,
+                "itemGap": 10
+            }
+        ],
+        "visualMap": {
+            "show": true,
+            "type": "continuous",
+            "min": 0,
+            "max": 300,
+            "inRange": {
+                "color": [
+                    "#008000",
+                    "#FFFF00",
+                    "#FFA500",
+                    "#FF0000",
+                    "#800080",
+                    "#C71585",
+                ]
+            },
+            "calculable": true,
+            "inverse": false,
+            "splitNumber": 6,
+            "orient": "vertical",
+            "showLabel": true,
+            "itemWidth": 20,
+            "itemHeight": 140,
+            "borderWidth": 0
+        },
+        "geo": {
+            "map": "china",
+            "roam": false,
+            "itemStyle": {
+                "areaColor": "#E6E6FA"
+            },
+            "emphasis": {}
+        }
+    };
+        chart_a53707c77f0f451b9403cfe178e327c0.setOption(option_a53707c77f0f451b9403cfe178e327c0);
+    }
+    </script>
+    <br>
+    <div style="clear: both; text-align:center;width:1700px">
+    <a href='http://beian.miit.gov.cn/' target='_blank'>粤ICP备20019977号</a>
+    </div>
+</body>
+</html>

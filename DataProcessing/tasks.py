@@ -19,8 +19,8 @@ from predict_data import predict_air
 def hour():
     logger.info("开始获取数据")
     # 获取数据
-    # data = get_dayily_data_new()
-    data = get_dayily_data()
+    data = get_dayily_data_new()
+    # data = get_dayily_data()
     # 存储数据
     with MysqlModel() as mysql:
         # 删除旧数据
